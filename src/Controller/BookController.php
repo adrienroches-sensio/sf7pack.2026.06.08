@@ -48,6 +48,13 @@ class BookController extends AbstractController
             ],
         ];
     }
+    #[Route('/books', name: 'app_book_index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->render('book/index.html.twig', [
+            'books' => $this->getBooks(),
+        ]);
+    }
     #[Route('/books/{slug}', name: 'app_book_show')]
     public function show(string $slug): Response
     {

@@ -3,19 +3,19 @@
 {% block title %}Books - Community Library{% endblock %}
 
 {% block body %}
-    <h1>Our collection ({# books length #} books)</h1>
+    <h1>Our Collection ({{ books|length }} books)</h1>
 
     <div class="book-grid">
-        {# Loop over books using for loop #}
-        <div class="book-card">
-            <h2>
-                <a href="{# Link to the show route #}">
-                    {# book title #}
-                </a>
-            </h2>
-            <p>{# Book author #} &mdash; {# Book year #}</p>
-            <p><em>{# Book genre #}</em></p>
-        </div>
-        {# endfor #}
+        {% for slug, book in books %}
+            <div class="book-card">
+                <h2>
+                    <a href="{{ path('app_book_show', {slug: slug}) }}">
+                        {{ book.title }}
+                    </a>
+                </h2>
+                <p>{{ book.author }} &mdash; {{ book.year }}</p>
+                <p><em>{{ book.genre }}</em></p>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
