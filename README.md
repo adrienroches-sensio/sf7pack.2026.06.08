@@ -14,6 +14,7 @@ $ git clone https://github.com/adrienroches-sensio/sf7pack.2026.06.08.git
 $ cd ./sf7pack.2026.06.08
 $ symfony composer install
 $ symfony console doctrine:migrations:migrate --no-interaction
+$ symfony console foundry:load-fixtures catalog --no-interaction
 $ symfony serve
 ```
 
