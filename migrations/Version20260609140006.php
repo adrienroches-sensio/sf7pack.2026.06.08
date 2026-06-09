@@ -14,7 +14,9 @@ final class Version20260609140006 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return <<<EOF
+        Create the book table associated to the App\Entity\Book entity.
+        EOF;
     }
 
     public function up(Schema $schema): void
