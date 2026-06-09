@@ -12,18 +12,18 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_main_index')]
     public function index(): Response
     {
-        return new Response('Homepage - Community Library');
+        return $this->render('main/index.html.twig');
     }
 
     #[Route('/about', name: 'app_main_about')]
     public function about(): Response
     {
-        return new Response('About - Community Library');
+        return $this->render('main/about.html.twig');
     }
 
     #[Route('/contact', name: 'app_main_contact')]
     public function contact(): Response
     {
-        return new Response('Contact - Community Library');
+        return $this->render('main/contact.html.twig');
     }
 }
