@@ -58,7 +58,15 @@ class BookController extends AbstractController
     #[Route('/books/{slug}', name: 'app_book_show')]
     public function show(string $slug): Response
     {
-        return new Response("Showing: $slug");
+        $books = $this->getBooks();
+
+        if (!array_key_exists($slug, $books)) {
+            throw $this->createNotFoundException('Book not found');
+        }
+
+        return $this->render('book/show.html.twig', [
+            'book' => $books[$slug],
+        ]);
     }
 
     #[Route('/books/new', name: 'app_book_new', priority: 1)]
