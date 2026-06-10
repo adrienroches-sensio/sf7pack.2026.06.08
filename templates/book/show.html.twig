@@ -6,14 +6,14 @@
     <h1>{{ book.title }}</h1>
 
     <div class="book-meta">
-        <span>{{ book.author }}</span>
-        <span>{{ book.year }}</span>
-        <span class="genre-badge">{{ book.genre|upper }}</span>
+        <span>{{ book.authors|map(author => author.name)|join(', ') }}</span>
+        <span>{{ book.publicationDate|date('Y') }}</span>
+        <span class="genre-badge">{{ book.genres|map(genre => genre.name)|join(', ')|upper }}</span>
     </div>
 
     <hr>
 
-    <p>{{ book.description }}</p>
+    <p>{{ book.summary }}</p>
 
     <a href="{{ path('app_book_index') }}" class="btn btn-outline-secondary">← Back to all books</a>
 {% endblock %}
