@@ -26,12 +26,12 @@ class BookType extends AbstractType
             ->add('coverUrl')
             ->add('genres', EntityType::class, [
                 'class' => Genre::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
             ])
             ->add('authors', EntityType::class, [
                 'class' => Author::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
             ])
         ;
