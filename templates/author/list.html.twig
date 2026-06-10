@@ -1,0 +1,7 @@
+<ul>
+{% for author in authors %}
+    <li><a href="{{ path('app_author_show', {id: author.id}) }}">
+        {{ author.name }}
+    </a> ({{ author.books|length }} books)</li>
+{% endfor %}
+</ul>
