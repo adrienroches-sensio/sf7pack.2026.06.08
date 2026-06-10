@@ -26,6 +26,8 @@ class BookController extends AbstractController
             $entityManager->persist($book);
             $entityManager->flush();
 
+            $this->addFlash('success', "Book titled \"{$book->getTitle()}\" successfully created.");
+
             return $this->redirectToRoute('app_book_show', ['id' => $book->getId()]);
         }
 
