@@ -2,10 +2,12 @@
 
 namespace App\Story;
 
+use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
+use function array_map;
 
 #[AsFixture('catalog')]
 final class LibraryCatalogStory extends Story
@@ -17,6 +19,9 @@ final class LibraryCatalogStory extends Story
          BookFactory::createMany(\count($books), static function (int $i) use ($books) {
              // Sauvegarder les genres avant unset
              $genres = $books[$i - 1]['genres'];
+
+             // Sauvegarder l'author avant unset
+             $author = $books[$i - 1]['author'];
 
              // Supprimer les clés non mappées sur Book
              unset($books[$i - 1]['genres'], $books[$i - 1]['author']);
@@ -30,6 +35,10 @@ final class LibraryCatalogStory extends Story
                  'genres' => array_map(
                      static fn(string $name) => GenreFactory::findOrCreate(['name' => $name]),
                      $genres,
+                 ),
+                 'authors' => array_map(
+                     static fn(string $name) => AuthorFactory::findOrCreate(['name' => $name]),
+                     [$author],
                  ),
              ];
          });
