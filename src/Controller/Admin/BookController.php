@@ -15,9 +15,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class BookController extends AbstractController
 {
     #[Route('/admin/books/new', name: 'admin_book_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/books/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Book|null $book = null): Response
     {
-        $book = new Book();
+        $defaultBook = new Book();
+        $defaultBook->setTitle('ChangeMe');
+
+        $book ??= $defaultBook;
         $form = $this->createForm(BookType::class, $book);
 
         $form->handleRequest($request);
