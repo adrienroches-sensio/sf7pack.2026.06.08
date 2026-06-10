@@ -1,7 +1,24 @@
-<ul>
-{% for author in authors %}
-    <li><a href="{{ path('app_author_show', {id: author.id}) }}">
-        {{ author.name }}
-    </a> ({{ author.books|length }} books)</li>
-{% endfor %}
-</ul>
+{% extends 'base.html.twig' %}
+
+{% block title %}Authors - Community Library{% endblock %}
+
+{% block body %}
+    <h1>Authors ({{ authors|length }} authors)</h1>
+
+    <div class="author-grid">
+        {% for author in authors %}
+            <div class="author-card">
+                <h2><a href="{{ path('app_author_show', {id: author.id}) }}">{{ author.name }}</a></h2>
+                <p>
+                    {{ author.books|length }}
+                    book{{ author.books|length > 1 ? 's' : '' }}
+                </p>
+                {% if author.biography %}
+                    <p><em>{{ author.biography|slice(0, 100) }}...</em></p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>No authors found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
