@@ -12,9 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class BookController extends AbstractController
 {
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/books', name: 'admin_books_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
@@ -23,6 +25,7 @@ class BookController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/books/new', name: 'admin_book_new', methods: ['GET', 'POST'])]
     #[Route('/admin/books/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Book|null $book = null): Response
