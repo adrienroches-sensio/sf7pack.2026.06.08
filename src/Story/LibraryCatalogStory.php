@@ -17,7 +17,7 @@ final class LibraryCatalogStory extends Story
      {
          $books = require dirname(__DIR__) . '/Story/data/book_fixtures.php';
 
-         $admin = UserFactory::createOne(['email' => 'admin@example.com']);
+         $admin = UserFactory::createOne(['email' => 'admin@example.com', 'roles' => ['ROLE_ADMIN']]);
          $reader = UserFactory::createOne(['email' => 'reader@example.com']);
 
          BookFactory::createMany(\count($books), static function (int $i) use ($books) {
