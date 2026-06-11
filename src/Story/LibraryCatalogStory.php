@@ -5,6 +5,7 @@ namespace App\Story;
 use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
+use App\Factory\UserFactory;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
 use function array_map;
@@ -15,6 +16,9 @@ final class LibraryCatalogStory extends Story
      public function build(): void
      {
          $books = require dirname(__DIR__) . '/Story/data/book_fixtures.php';
+
+         $admin = UserFactory::createOne(['email' => 'admin@example.com']);
+         $reader = UserFactory::createOne(['email' => 'reader@example.com']);
 
          BookFactory::createMany(\count($books), static function (int $i) use ($books) {
              // Sauvegarder les genres avant unset
