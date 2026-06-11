@@ -373,3 +373,7 @@ header nav .user-menu .user-email {
     color: #d1d5db;
     font-style: italic;
 }
+
+nav.pagination a {
+    color: blue;
+}

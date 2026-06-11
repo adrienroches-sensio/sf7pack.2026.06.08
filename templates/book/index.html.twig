@@ -47,13 +47,24 @@
                         {% endif %}
 
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('app_admin_book_edit', {id: book.id}) }}" class="btn btn-outline-secondary">Edit</a>
+                            <a href="{{ path('admin_book_edit', {id: book.id}) }}" class="btn btn-outline-secondary">Edit</a>
                         {% endif %}
                     </div>
                 {% else %}
                     <p>No books found.</p>
                 {% endfor %}
             </div>
+            <nav class="pagination">
+                {% if _pagination_current_page > 1 %}
+                    <a href="{{ path('app_book_index', app.request.query.all|merge({page: _pagination_current_page - 1})) }}">← Prev</a>
+                {% endif %}
+
+                <span>Page {{ _pagination_current_page }} of {{ _pagination_total_pages }}</span>
+
+                {% if _pagination_current_page < _pagination_total_pages %}
+                    <a href="{{ path('app_book_index', app.request.query.all|merge({page: _pagination_current_page + 1})) }}">Next →</a>
+                {% endif %}
+            </nav>
         </section>
     </div>
 

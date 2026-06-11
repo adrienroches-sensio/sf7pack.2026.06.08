@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use function ceil;
+use function count;
+use function max;
 
 class BookController extends AbstractController
 {
@@ -56,16 +59,23 @@ class BookController extends AbstractController
     #[Route('/books', name: 'app_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository, Request $request): Response
     {
+        $page = max(1, $request->query->getInt('page', 1));
+        $perPage = 2;
+
         $form = $this->createForm(BookSearchType::class);
         $form->handleRequest($request);
 
-        $books = $bookRepository->search(
+        $books = $bookRepository->paginatedSearch(
             $form->isSubmitted() && $form->isValid() ? $form->getData() : [],
+            $page,
+            $perPage
         );
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
             'form' => $form,
+            '_pagination_current_page' => $page,
+            '_pagination_total_pages' => max(1, (int) ceil(count($books) / $perPage)),
         ]);
     }
 

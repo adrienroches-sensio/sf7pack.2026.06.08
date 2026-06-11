@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,7 +26,7 @@ class BookRepository extends ServiceEntityRepository
         return $this->findAll();
     }
 
-    public function search(array $criteria = []): array
+    private function createSearchQuery(array $criteria = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('b')
             ->addSelect('a')                    // On évite le N+1 sur authors
@@ -45,7 +47,23 @@ class BookRepository extends ServiceEntityRepository
             $qb->andWhere('b.available = true');
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb;
+    }
+
+    public function search(array $criteria = []): array
+    {
+        return $this->createSearchQuery($criteria)->getQuery()->getResult();
+    }
+
+    public function paginatedSearch(array $criteria = [], int $page = 1, int $perPage = 10): Paginator
+    {
+        $query = $this->createSearchQuery($criteria);
+        $query
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+        ;
+
+        return new Paginator($query);
     }
 
     //    /**
