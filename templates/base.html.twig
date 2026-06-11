@@ -24,7 +24,7 @@
                 <a href="{{ path('app_main_contact') }}">Contact</a>
                 {% if app.user %}
                     <span>{{ app.user.email }}</span>
-                    <a href="{{ path('app_logout') }}">Logout</a>
+                    <a href="{{ logout_path() }}">Logout</a>
                 {% else %}
                     <a href="{{ path('app_login') }}">Login</a>
                     <a href="{{ path('app_register') }}">Register</a>
