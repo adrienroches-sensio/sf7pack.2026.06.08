@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Security\BookPermission;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +26,18 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_LIBRARIAN')]
     #[Route('/admin/books/new', name: 'admin_book_new', methods: ['GET', 'POST'])]
     #[Route('/admin/books/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Book|null $book = null): Response
     {
+        $isNew = null === $book;
+
+        if (true === $isNew) {
+            $this->denyAccessUnlessGranted('ROLE_LIBRARIAN');
+        } else {
+            $this->denyAccessUnlessGranted(BookPermission::EDIT_DETAILS, $book);
+        }
+
         $defaultBook = new Book();
         $defaultBook->setTitle('ChangeMe');
 
