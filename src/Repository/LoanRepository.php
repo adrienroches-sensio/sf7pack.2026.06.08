@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Loan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use function Doctrine\ORM\QueryBuilder;
 
@@ -15,6 +16,17 @@ class LoanRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Loan::class);
+    }
+
+    public function hasActiveLoanByBookId(int $bookId): bool
+    {
+        try {
+            $this->getActiveLoanByBookId($bookId);
+
+            return true;
+        } catch (NoResultException) {
+            return false;
+        }
     }
 
     public function getActiveLoanByBookId(int $bookId): Loan
