@@ -3,10 +3,9 @@
 namespace App\Security\Voter;
 
 use App\Entity\Book;
-use App\Entity\User;
 use App\Security\BookPermission;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class BookVoter extends Voter
 {
     public function __construct(
-        private readonly AuthorizationCheckerInterface $checker,
+        private readonly AccessDecisionManagerInterface $accessDecisionManager,
     ) {}
 
 
@@ -39,9 +38,9 @@ final class BookVoter extends Voter
 
         return match ($attribute) {
             BookPermission::EDIT_DETAILS =>
-                $this->checker->isGranted('ROLE_LIBRARIAN') || $subject->getAddedBy() === $user,
+                $this->accessDecisionManager->decide($token, ['ROLE_LIBRARIAN']) || $subject->getAddedBy() === $user,
             BookPermission::CHANGE_AVAILABILITY =>
-            $this->checker->isGranted('ROLE_LIBRARIAN'),
+            $this->accessDecisionManager->decide($token, ['ROLE_LIBRARIAN']),
             default => false,
         };
     }
