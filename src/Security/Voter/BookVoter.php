@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class BookVoter extends Voter
+final class BookVoter // extends Voter
 {
     public function __construct(
         private readonly AccessDecisionManagerInterface $accessDecisionManager,

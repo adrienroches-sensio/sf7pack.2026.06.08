@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookSearchType;
 use App\Repository\BookRepository;
+use App\Security\BookPermission;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,6 +83,8 @@ class BookController extends AbstractController
     #[Route('/books/{id}', name: 'app_book_show')]
     public function show(Book $book): Response
     {
+        $this->denyAccessUnlessGranted(BookPermission::CHANGE_AVAILABILITY, $book);
+
         return $this->render('book/show.html.twig', [
             'book' => $book,
         ]);
