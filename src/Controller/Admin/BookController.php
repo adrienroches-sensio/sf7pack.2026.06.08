@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Book\Event\BookCreatedEvent;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Security\BookPermission;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +31,7 @@ class BookController extends AbstractController
 
     #[Route('/admin/books/new', name: 'admin_book_new', methods: ['GET', 'POST'])]
     #[Route('/admin/books/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Book|null $book = null): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Book|null $book = null, EventDispatcherInterface $eventDispatcher): Response
     {
         $isNew = null === $book;
 
@@ -49,6 +52,12 @@ class BookController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($book);
             $entityManager->flush();
+
+            if ($isNew === true) {
+                $eventDispatcher->dispatch(
+                    new BookCreatedEvent($book, $this->getUser(), new DateTimeImmutable())
+                );
+            }
 
             $this->addFlash('success', "Book titled \"{$book->getTitle()}\" successfully created.");
 
