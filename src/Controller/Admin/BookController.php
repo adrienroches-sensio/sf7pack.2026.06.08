@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class BookController extends AbstractController
 {
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_LIBRARIAN')]
     #[Route('/admin/books', name: 'admin_books_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
