@@ -25,7 +25,7 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_LIBRARIAN')]
     #[Route('/admin/books/new', name: 'admin_book_new', methods: ['GET', 'POST'])]
     #[Route('/admin/books/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Book|null $book = null): Response

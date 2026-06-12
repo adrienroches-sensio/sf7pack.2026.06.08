@@ -54,6 +54,9 @@ class Book
     #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books')]
     private Collection $authors;
 
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    private ?User $addedBy = null;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
