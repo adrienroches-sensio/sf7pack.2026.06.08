@@ -19,6 +19,9 @@ final class LibraryCatalogStory extends Story
 
          $admin = UserFactory::createOne(['email' => 'admin@example.com', 'roles' => ['ROLE_ADMIN']]);
          $reader = UserFactory::createOne(['email' => 'reader@example.com']);
+         $manager = UserFactory::createOne(['email' => 'manager@example.com', 'roles' => ['ROLE_MANAGER']]);
+         $librarian = UserFactory::createOne(['email' => 'librarian@example.com', 'roles' => ['ROLE_LIBRARIAN']]);
+         $webmaster = UserFactory::createOne(['email' => 'webmaster@example.com', 'roles' => ['ROLE_WEBMASTER']]);
 
          BookFactory::createMany(\count($books), static function (int $i) use ($books) {
              // Sauvegarder les genres avant unset
