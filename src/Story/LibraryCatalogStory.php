@@ -22,8 +22,10 @@ final class LibraryCatalogStory extends Story
          $manager = UserFactory::createOne(['email' => 'manager@example.com', 'roles' => ['ROLE_MANAGER']]);
          $librarian = UserFactory::createOne(['email' => 'librarian@example.com', 'roles' => ['ROLE_LIBRARIAN']]);
          $webmaster = UserFactory::createOne(['email' => 'webmaster@example.com', 'roles' => ['ROLE_WEBMASTER']]);
+         $contributors = [$librarian, $reader, $manager];
 
-         BookFactory::createMany(\count($books), static function (int $i) use ($books) {
+         BookFactory::createMany(\count($books), static function (int $i) use ($books, $contributors) {
+
              // Sauvegarder les genres avant unset
              $genres = $books[$i - 1]['genres'];
 
@@ -47,6 +49,7 @@ final class LibraryCatalogStory extends Story
                      static fn(string $name) => AuthorFactory::findOrCreate(['name' => $name]),
                      [$author],
                  ),
+                 'addedBy' => $contributors[$i % 3],
              ];
          });
      }

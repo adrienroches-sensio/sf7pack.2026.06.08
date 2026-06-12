@@ -175,4 +175,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function setBooks(Collection $books): void
+    {
+        $this->books = $books;
+    }
 }

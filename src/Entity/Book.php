@@ -199,4 +199,16 @@ class Book
 
         return $this;
     }
+
+    public function getAddedBy(): ?User
+    {
+        return $this->addedBy;
+    }
+
+    public function setAddedBy(?User $addedBy): static
+    {
+        $this->addedBy = $addedBy;
+
+        return $this;
+    }
 }
